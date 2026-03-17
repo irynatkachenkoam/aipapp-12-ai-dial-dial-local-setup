@@ -2,6 +2,7 @@ import uvicorn
 
 from aidial_sdk import DIALApp
 from aidial_sdk.chat_completion import ChatCompletion, Request, Response
+from starlette.responses import JSONResponse
 
 
 # ChatCompletion is an abstract class for applications and model adapters
@@ -21,6 +22,10 @@ class EchoApplication(ChatCompletion):
 # DIAL App extends FastAPI to provide an user-friendly interface for routing requests to your applications
 app = DIALApp()
 app.add_chat_completion("echo", EchoApplication())
+
+@app.get("/health")
+async def health():
+    return JSONResponse({"status": "healthy"}, status_code=200)
 
 # Run builded app
 if __name__ == "__main__":
